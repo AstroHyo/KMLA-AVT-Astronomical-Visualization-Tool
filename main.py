@@ -12,7 +12,6 @@ r_name = ' '
 g_name = ' '
 b_name = ' '
 img_name = ' '
-    
 
 #부모의 frame을 가져와서 메뉴나 부가기능 추가
 class UnnamedYet(wx.Frame):
@@ -92,18 +91,20 @@ class UnnamedYet(wx.Frame):
     def openFile_r(self,  event):
         # 파일 오픈 다이얼로그 생성
         dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", wx.FD_OPEN)
+
        # 파일 다이얼로그에서 파일을 선택후 ok 버튼을 누르면
         if dlg.ShowModal() == wx.ID_OK:
-                # 파일의 경로를 구함
-                r = dlg.GetPath()
-                # 파일 경로에서 파일명만 추출함
-                mypath = os.path.basename(r)
-               # 선택한 파일의 이름을 Frame의 상태바에 출력함
-                self.SetStatusText("You selected: %s" % mypath)
+            # 파일의 경로를 구함
+            r = dlg.GetPath()
+            # 파일 경로에서 파일명만 추출함
+            mypath = os.path.basename(r)
+            # 선택한 파일의 이름을 Frame의 상태바에 출력함
+            self.SetStatusText("You selected: %s" % mypath)
+
+            global r_name
+            r_name = r
        # 파일 오픈 다이얼로그 파괴
         dlg.Destroy()
-        global r_name
-        r_name = r
         
     # 파일 오픈 다이얼로그 띄우기(이벤트 처리기)
     def openFile_g(self, event):
@@ -111,33 +112,35 @@ class UnnamedYet(wx.Frame):
         dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", wx.FD_OPEN)
        # 파일 다이얼로그에서 파일을 선택후 ok 버튼을 누르면
         if dlg.ShowModal() == wx.ID_OK:
-                # 파일의 경로를 구함
-                g = dlg.GetPath()
-                # 파일 경로에서 파일명만 추출함
-                mypath = os.path.basename(g)
-               # 선택한 파일의 이름을 Frame의 상태바에 출력함
-                self.SetStatusText("You selected: %s" % mypath)
+            # 파일의 경로를 구함
+            g = dlg.GetPath()
+            # 파일 경로에서 파일명만 추출함
+            mypath = os.path.basename(g)
+            # 선택한 파일의 이름을 Frame의 상태바에 출력함
+            self.SetStatusText("You selected: %s" % mypath)
+            global g_name
+            g_name = g
+
        # 파일 오픈 다이얼로그 파괴
         dlg.Destroy()
-        global g_name
-        g_name = g
-    
+        
     # 파일 오픈 다이얼로그 띄우기(이벤트 처리기)
     def openFile_b(self,  event):
         # 파일 오픈 다이얼로그 생성
         dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", "*.*", wx.FD_OPEN)
        # 파일 다이얼로그에서 파일을 선택후 ok 버튼을 누르면
         if dlg.ShowModal() == wx.ID_OK:
-                # 파일의 경로를 구함
-                b = dlg.GetPath()
-                # 파일 경로에서 파일명만 추출함
-                mypath = os.path.basename(b)
-               # 선택한 파일의 이름을 Frame의 상태바에 출력함
-                self.SetStatusText("You selected: %s" % mypath)
+            # 파일의 경로를 구함
+            b = dlg.GetPath()
+            # 파일 경로에서 파일명만 추출함
+            mypath = os.path.basename(b)
+            # 선택한 파일의 이름을 Frame의 상태바에 출력함
+            self.SetStatusText("You selected: %s" % mypath)
+            global b_name
+            b_name = b
+
        # 파일 오픈 다이얼로그 파괴
         dlg.Destroy()
-        global b_name
-        b_name = b
 
     def mergeButton(self, evt):
         global r_name
@@ -148,13 +151,13 @@ class UnnamedYet(wx.Frame):
         g0 = fits.open(g_name)[0].data - 255
         b0 = fits.open(b_name)[0].data - 255
 
-        r=r0.astype(float)
-        g=g0.astype(float)
-        b=b0.astype(float)
+        r = r0.astype(float)
+        g = g0.astype(float)
+        b = b0.astype(float)
 
         rgb = make_lupton_rgb(r, g, b, Q=10, stretch=0.1, filename=img_name)
-        #plt.imshow(rgb, origin='lower')
-        #plt.waitforbuttonpress()
+        plt.imshow(rgb, origin='lower')
+        plt.waitforbuttonpress()
         
     def makeMenuBar(self):
 
